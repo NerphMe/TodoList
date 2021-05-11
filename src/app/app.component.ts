@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         .post<Todo[]>('http://127.0.0.1:8000/api/create/children/todo', {title: this.childTitle, parent_id: createChildren.id})
         .subscribe(todo => {
             // @ts-ignore
-          this.todoList = this.todoList.find(todo => todo.id === createChildren.id).children.push(todo);
+          this.todoList.find(todo => todo.id === createChildren.id).children.push(todo);
           }
         );
       this.childTitle = '';
