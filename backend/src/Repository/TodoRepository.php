@@ -15,53 +15,66 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TodoRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $manager;
+  private EntityManagerInterface $manager;
 
-    public function __construct(
-        ManagerRegistry $registry,
-        EntityManagerInterface $manager
-    )
-    {
-        $this->manager = $manager;
-        parent::__construct($registry, Todo::class);
-    }
+  public function __construct(
+    ManagerRegistry $registry,
+    EntityManagerInterface $manager
+  )
+  {
+    $this->manager = $manager;
+    parent::__construct($registry, Todo::class);
+  }
 
-    public function getTodos()
-    {
-        $query = $this->manager->createQuery('SELECT t FROM App\Entity\Todo t
+  public function getTodos()
+  {
+    $query = $this->manager->createQuery('SELECT t FROM App\Entity\Todo t
             WHERE t.parent IS NULL');
 
-        return $query->getResult();
-    }
+    return $query->getResult();
+  }
 
-    public function deleteTodo(Todo $todo)
-    {
-        $this->manager->remove($todo);
-        $this->manager->flush();
-    }
+  public function deleteTodo(Todo $todo)
+  {
+    $this->manager->remove($todo);
+    $this->manager->flush();
+  }
 
-    public function updateTodo(Todo $todo, bool $status)
-    {
-        $this->manager->find('App\Entity\Todo', $todo->getId());
-        $todo->setIsCompleted($status);
-        $this->manager->flush();
-    }
+  /**
+   * @param Todo $todo
+   * @param bool $status
+   */
+  public function updateTodo(Todo $todo, bool $status)
+  {
+    $this->manager->find('App\Entity\Todo', $todo->getId());
+    $todo->setIsCompleted($status);
+    $this->manager->flush();
+  }
 
-    /**
-     * @param int $parent
-     * @param string $title
-     * @return object
-     */
-    public function createChildren(int $parent, string $title): object
-    {
-        $parentTodo = $this->manager->find('App\Entity\Todo', $parent);
+  /**
+   * @param int $parent
+   * @param string $title
+   * @return object
+   */
+  public function createChildren(int $parent, string $title): object
+  {
+    $parentTodo = $this->manager->find('App\Entity\Todo', $parent);
 
-        $childTodo = new Todo();
-        $childTodo->setTitle($title);
-        $childTodo->setParent($parentTodo);
-        $this->manager->persist($childTodo);
-        $this->manager->flush();
+    $childTodo = new Todo();
+    $childTodo->setTitle($title);
+    $childTodo->setParent($parentTodo);
+    $this->manager->persist($childTodo);
+    $this->manager->flush();
 
-        return $childTodo;
-    }
+    return $childTodo;
+  }
+
+  public function searchTodo(string $term)
+  {
+    return $this->createQueryBuilder('t')
+      ->where('t.title LIKE :term')
+      ->setParameter('term', '%' . $term . '%')
+      ->getQuery()
+      ->getResult();
+  }
 }

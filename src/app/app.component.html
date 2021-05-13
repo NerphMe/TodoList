@@ -8,15 +8,16 @@
 
 <!-- Main -->
 <div class="main container rounded p-3 mt-3">
-  <form class="form-group mb-5" name="title" (ngSubmit)="onCreate()">
-    <input type="text" name="title" class="form-control mb-2" [(ngModel)]="title" placeholder="What do you want to do?">
-    <button mat-button color="primary" [disabled]="!title">Create Todo</button>
+  <form class="form-group col-md-12" name="title" (ngSubmit)="onCreate()">
+<!--    <input type="text" name="title" class="form-control col-md-6" [(ngModel)]="title" placeholder="What do you want to do?">-->
+<!--    <button mat-button color="primary" [disabled]="!title">Create Todo</button>-->
+    <input type="text" name="search" class="form-control col-md-4" [(ngModel)]="title" (ngModelChange)="onSearch()" placeholder="What do you want to search?">
   </form>
   <ng-container *ngFor="let todo of todoList">
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <input type="checkbox" name="isCompleted" [checked]="todo.isCompleted" (change)="onCompete(todo)">&nbsp;
+          <input type="checkbox" name="isCompleted" [checked]="todo.isCompleted" (change)="onComplete(todo)">&nbsp;
           <span  *ngIf="!todo.isCompleted">{{todo.title}}</span>
           <span *ngIf="todo.isCompleted"><del>{{todo.title}}</del></span>
         </mat-panel-title>
@@ -30,7 +31,7 @@
         </div>
       <div *ngFor="let child of todo.children">
         <span>{{child.title}}</span>
-        <mat-icon [inline]="true" class="child-icon" aria-hidden="false" aria-label="Delete" (click)="onRemove(child)">delete</mat-icon>
+        <mat-icon [inline]="true" class="child-icon" aria-hidden="false" aria-label="Delete" (click)="onRemoveChildren(child)">delete</mat-icon>
       </div>
     </mat-expansion-panel>
   </ng-container>

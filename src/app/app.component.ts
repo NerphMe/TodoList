@@ -1,6 +1,8 @@
 // noinspection NegatedConditionalExpressionJS,TypeScriptUnresolvedVariable
+// noinspection NestedFunctionCallJS
+
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Todo} from './todo';
 
 
@@ -23,7 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.httpClint.get<Todo[]>('http://127.0.0.1:8000/api/todos')
       .subscribe(todoList => {
-        this.todoList = todoList;
+          this.todoList = todoList;
       });
   }
 
@@ -46,11 +48,21 @@ export class AppComponent implements OnInit {
         .post<Todo[]>('http://127.0.0.1:8000/api/create/children/todo', {title: this.childTitle, parent_id: createChildren.id})
         .subscribe(todo => {
             // @ts-ignore
-          this.todoList.find(todo => todo.id === createChildren.id).children.push(todo);
+            this.todoList.find(todo => todo.id === createChildren.id).children.push(todo);
           }
         );
       this.childTitle = '';
     }
+  }
+
+  onRemoveChildren(removeChildren: Todo): void {
+    this.httpClint
+      .delete<void>('http://127.0.0.1:8000/api/delete/children/todo/' + removeChildren.id)
+      .subscribe(todo => {
+          // @ts-ignore
+          this.ngOnInit();
+        }
+      );
   }
 
   onRemove(todoOnDelete: Todo): void {
@@ -62,12 +74,26 @@ export class AppComponent implements OnInit {
       );
   }
 
-  onCompete(todoOnComplete: Todo): void {
+  onComplete(todoOnComplete: Todo): void {
     this.httpClint
       .patch<Todo>('http://127.0.0.1:8000/api/update/todo/' + todoOnComplete.id, {
         isCompleted: !todoOnComplete.isCompleted
       }).subscribe((updatedTodo: Todo) => {
       this.todoList = this.todoList.map(todo => todo.id !== updatedTodo.id ? todo : updatedTodo);
     });
+  }
+
+  onSearch() {
+    const params = new HttpParams().append('title', this.title);
+    this.httpClint.get<Todo>('http://127.0.0.1:8000/api/search/todos', {params})
+      .subscribe((searchedTodo: Todo) => {
+        // @ts-ignore
+       if (this.title === '') {
+         this.ngOnInit();
+       } else {
+         // @ts-ignore
+          this.todoList = this.todoList.filter(todo => todo.id === searchedTodo.id);
+       }
+      });
   }
 }

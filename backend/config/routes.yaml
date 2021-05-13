@@ -8,25 +8,29 @@ todo_create:
   controller: App\Controller\TodoController:store
   methods: [POST]
 
-todo_children_create:
-  path: api/create/children/todo
-  controller: App\Controller\TodoController:storeChildren
-  methods: [POST]
-
-todo_delete:
-  path: api/delete/todo/{todo}
-  controller: App\Controller\TodoController:delete
-  methods: [DELETE]
-
 todo_update:
   path: api/update/todo/{todo}
   controller: App\Controller\TodoController:update
   methods: [PATCH]
 
-#user_show:
-#  path: api/show/user/{id}
-#  controller: App\Controller\UserController:show
-#  methods: [GET]
-#  requirements:
-#    id: '\d+'
+search_todo:
+  path: api/search/todos
+  controller: App\Controller\TodoController:search
+  methods: [GET]
 
+delete_todo:
+  path: api/delete/todo/{todo}
+  controller: App\Controller\TodoController:delete
+  methods: [DELETE]
+
+
+todo_children_create:
+  path: api/create/children/todo
+  controller: App\Controller\TodoChildrenController:store
+  methods: [POST]
+
+
+todo_children_delete:
+  path: api/delete/children/todo/{todo}
+  controller: App\Controller\TodoChildrenController:delete
+  methods: [DELETE]
