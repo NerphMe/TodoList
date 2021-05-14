@@ -13,6 +13,7 @@ import {Todo} from './todo';
 })
 export class AppComponent implements OnInit {
   public title = '';
+  public title_search = '';
   public childTitle = '';
   public toggle = [];
   public todoList: Todo[];
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.httpClint.get<Todo[]>('http://127.0.0.1:8000/api/todos')
       .subscribe(todoList => {
-          this.todoList = todoList;
+         return this.todoList = todoList;
       });
   }
 
@@ -35,7 +36,7 @@ export class AppComponent implements OnInit {
         .post<Todo[]>('http://127.0.0.1:8000/api/create/todo', {title: this.title})
         .subscribe(todo => {
             // @ts-ignore
-            return this.todoList.push(todo);
+            return this.todoList.push(todo) ?? todo;
           }
         );
       this.title = '';
@@ -58,11 +59,7 @@ export class AppComponent implements OnInit {
   onRemoveChildren(removeChildren: Todo): void {
     this.httpClint
       .delete<void>('http://127.0.0.1:8000/api/delete/children/todo/' + removeChildren.id)
-      .subscribe(todo => {
-          // @ts-ignore
-          this.ngOnInit();
-        }
-      );
+      .subscribe(() => this.ngOnInit());
   }
 
   onRemove(todoOnDelete: Todo): void {
@@ -83,16 +80,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // tslint:disable-next-line:typedef
   onSearch() {
-    const params = new HttpParams().append('title', this.title);
-    this.httpClint.get<Todo>('http://127.0.0.1:8000/api/search/todos', {params})
-      .subscribe((searchedTodo: Todo) => {
+    const params = new HttpParams().append('title', this.title_search);
+    this.httpClint.get<Todo[]>('http://127.0.0.1:8000/api/search/todos', {params})
+      .subscribe(todoList => {
         // @ts-ignore
-       if (this.title === '') {
+       if (this.title_search === '') {
          this.ngOnInit();
        } else {
          // @ts-ignore
-          this.todoList = this.todoList.filter(todo => todo.id === searchedTodo.id);
+          this.todoList = todoList;
        }
       });
   }

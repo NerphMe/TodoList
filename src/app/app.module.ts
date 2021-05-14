@@ -23,7 +23,6 @@ import {MatButtonModule} from '@angular/material/button';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgbModule,
     BrowserAnimationsModule,
     MatGridListModule,
     MatExpansionModule,
@@ -31,6 +30,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule,
     MatListModule,
     MatIconModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

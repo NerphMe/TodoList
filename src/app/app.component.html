@@ -1,5 +1,3 @@
-<!-- Nav -->
-<!--suppress TypeScriptUnresolvedVariable -->
 <nav class="navbar navbar-inverse">
   <div class='container'>
     <span class="navbar-brand">Todos</span>
@@ -9,32 +7,59 @@
 <!-- Main -->
 <div class="main container rounded p-3 mt-3">
   <form class="form-group col-md-12" name="title" (ngSubmit)="onCreate()">
-<!--    <input type="text" name="title" class="form-control col-md-6" [(ngModel)]="title" placeholder="What do you want to do?">-->
-<!--    <button mat-button color="primary" [disabled]="!title">Create Todo</button>-->
-    <input type="text" name="search" class="form-control col-md-4" [(ngModel)]="title" (ngModelChange)="onSearch()" placeholder="What do you want to search?">
+    <input type="text" name="title" class="form-control col-md-10" [(ngModel)]="title" placeholder="What do you want to do?">
+    <button class="btn btn-success col-md-2" [disabled]="!title">Create Todo</button> &nbsp;
+    <input type="text" name="search" class="form-control col-md-12" [(ngModel)]="title_search" (ngModelChange)="onSearch()" placeholder="What do you want to search?">
   </form>
-  <ng-container *ngFor="let todo of todoList">
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <input type="checkbox" name="isCompleted" [checked]="todo.isCompleted" (change)="onComplete(todo)">&nbsp;
-          <span  *ngIf="!todo.isCompleted">{{todo.title}}</span>
-          <span *ngIf="todo.isCompleted"><del>{{todo.title}}</del></span>
-        </mat-panel-title>
-          <mat-icon [inline]="true" class="icon" aria-hidden="false" aria-label="Delete" (click)="onRemove(todo)">delete</mat-icon>
-      </mat-expansion-panel-header>
-      <div>
-      <form class="form-group mb-5" name="child_title" (ngSubmit)="onCreateChildren(todo)">
-        <input type="text" name="child_title" class="form-control mb-2" [(ngModel)]="childTitle" placeholder="What do you want to do?">
-        <button mat-button color="primary" [disabled]="!childTitle">Create Sub Todo</button>
-      </form>
-        </div>
-      <div *ngFor="let child of todo.children">
-        <span>{{child.title}}</span>
-        <mat-icon [inline]="true" class="child-icon" aria-hidden="false" aria-label="Delete" (click)="onRemoveChildren(child)">delete</mat-icon>
-      </div>
-    </mat-expansion-panel>
-  </ng-container>
+  <div class="container my-4">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let todo of todoList">
+      <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="{{todo.id}}" >
+        <td class="expand-button"></td>
+        <td>{{todo.title}}</td>
+      </tr>
+      <tr class="hide-table-padding">
+        <td colspan="3"  *ngFor="let child of todo.children">
+          <div id="{{child.parent}}" class="collapse in p-3">
+            <div class="row">
+              <div class="col-2">{{child.title}}</div>
+            </div>
+          </div></td>
+      </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--    <mat-expansion-panel hideToggle *ngFor="let todo of todoList">-->
+<!--      <mat-expansion-panel-header>-->
+<!--        <mat-panel-title>-->
+<!--          <input type="checkbox" name="isCompleted" [checked]="todo.isCompleted" (change)="onComplete(todo)">&nbsp;-->
+<!--          <span  *ngIf="!todo.isCompleted">{{todo.title}}</span>-->
+<!--          <span *ngIf="todo.isCompleted"><del>{{todo.title}}</del></span>-->
+<!--        </mat-panel-title>-->
+<!--          <mat-icon [inline]="true" class="icon" aria-hidden="false" aria-label="Delete" (click)="onRemove(todo)">delete</mat-icon>-->
+<!--      </mat-expansion-panel-header>-->
+<!--      <div>-->
+<!--      <form class="form-group mb-5" name="child_title" (ngSubmit)="onCreateChildren(todo)">-->
+<!--        <input type="text" name="child_title" class="form-control mb-2" [(ngModel)]="childTitle" placeholder="What do you want to do?">-->
+<!--        <button mat-button color="primary" [disabled]="!childTitle">Create Sub Todo</button>-->
+<!--      </form>-->
+<!--        </div>-->
+<!--      <div *ngFor="let child of todo.children">-->
+<!--        <span>{{child.title}}</span>-->
+<!--        <mat-icon [inline]="true" class="child-icon" aria-hidden="false" aria-label="Delete" (click)="onRemoveChildren(child)">delete</mat-icon>-->
+<!--      </div>-->
+<!--    </mat-expansion-panel>-->
 </div>
 
 <style>
