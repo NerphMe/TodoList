@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <nav class="navbar navbar-inverse">
   <div class='container'>
     <span class="navbar-brand">Todos</span>
@@ -26,7 +27,8 @@
       <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#asd41">
         <td class="expand-button"></td>
         <td>{{todo.title}}</td>
-        <td> <mat-icon [inline]="true" class="icon" aria-hidden="false" aria-label="Delete" (click)="onRemove(todo)">delete</mat-icon> <mat-icon class="icon" aria-hidden="false" aria-label="Delete">edit</mat-icon> </td>
+        <td> <mat-icon [inline]="true" class="icon" aria-hidden="false" aria-label="Delete" (click)="onRemove(todo)">delete</mat-icon>
+          <mat-icon [inline]="true" class="my_class" aria-hidden="false" aria-label="Change" (click)="onShow(todo) ">edit</mat-icon> </td>
       </tr>
       <tr class="hide-table-padding">
         <td></td>
@@ -74,5 +76,8 @@
   .child-icon {
     font-size: 36px;
     float: right;
+  }
+  .my_class {
+    font-size: 36px;
   }
 </style>

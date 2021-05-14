@@ -69,10 +69,15 @@ class TodoController extends AbstractController
    * @param Request $request
    * @return int|mixed|string
    */
-  public function search(Request $request)
+  public function search(Request $request): mixed
   {
     $term = $request->get('title');
     $todo = $this->todoRepository->searchTodo($term);
+    return $this->json($todo);
+  }
+
+  public function show(Todo $todo)
+  {
     return $this->json($todo);
   }
 }

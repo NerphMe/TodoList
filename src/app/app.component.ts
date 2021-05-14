@@ -4,12 +4,13 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Todo} from './todo';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   public title = '';
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
   private httpClint: HttpClient;
   public text = '#41';
 
-  constructor(httpClient: HttpClient) {
+  constructor(httpClient: HttpClient, private modalService: NgbModal) {
     this.httpClint = httpClient;
   }
 
@@ -95,4 +96,13 @@ export class AppComponent implements OnInit {
        }
       });
   }
+
+  onShow(showTodo: Todo) {
+    this.httpClint.get<Todo[]>('http://127.0.0.1:8000/api/show/todo/' + showTodo.id)
+      .subscribe(todoList => {
+        // @ts-ignore
+
+      });
+  }
+
 }

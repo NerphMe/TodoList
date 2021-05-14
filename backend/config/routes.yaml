@@ -23,6 +23,10 @@ delete_todo:
   controller: App\Controller\TodoController:delete
   methods: [DELETE]
 
+show_todo:
+  path: api/show/todo/{todo}
+  controller: App\Controller\TodoController:show
+  methods: [GET]
 
 todo_children_create:
   path: api/create/children/todo

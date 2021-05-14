@@ -26,7 +26,10 @@ class TodoRepository extends ServiceEntityRepository
     parent::__construct($registry, Todo::class);
   }
 
-  public function getTodos()
+  /**
+   * @return int|mixed|string
+   */
+  public function getTodos(): mixed
   {
     $query = $this->manager->createQuery('SELECT t FROM App\Entity\Todo t
             WHERE t.parent IS NULL');
@@ -34,6 +37,9 @@ class TodoRepository extends ServiceEntityRepository
     return $query->getResult();
   }
 
+  /**
+   * @param Todo $todo
+   */
   public function deleteTodo(Todo $todo)
   {
     $this->manager->remove($todo);
@@ -69,7 +75,11 @@ class TodoRepository extends ServiceEntityRepository
     return $childTodo;
   }
 
-  public function searchTodo(string $term)
+  /**
+   * @param string $term
+   * @return int|mixed|string
+   */
+  public function searchTodo(string $term): mixed
   {
     return $this->createQueryBuilder('t')
       ->where('t.title LIKE :term')
