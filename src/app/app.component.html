@@ -18,19 +18,23 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Title</th>
+        <th scope="col">Actions</th>
       </tr>
       </thead>
       <tbody>
       <ng-container *ngFor="let todo of todoList">
-      <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="{{todo.id}}" >
+      <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#asd41">
         <td class="expand-button"></td>
         <td>{{todo.title}}</td>
+        <td> <mat-icon [inline]="true" class="icon" aria-hidden="false" aria-label="Delete" (click)="onRemove(todo)">delete</mat-icon> <mat-icon class="icon" aria-hidden="false" aria-label="Delete">edit</mat-icon> </td>
       </tr>
       <tr class="hide-table-padding">
-        <td colspan="3"  *ngFor="let child of todo.children">
-          <div id="{{child.parent}}" class="collapse in p-3">
-            <div class="row">
+        <td></td>
+        <td colspan="3" >
+          <div id="asd41" class="collapse in p-3">
+            <div class="row"  *ngFor="let child of todo.children">
               <div class="col-2">{{child.title}}</div>
+              <div class="col-2"><mat-icon [inline]="true" class="child-icon" aria-hidden="false" aria-label="Delete" (click)="onRemoveChildren(child)">delete</mat-icon></div>
             </div>
           </div></td>
       </tr>

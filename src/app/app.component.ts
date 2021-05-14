@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   public toggle = [];
   public todoList: Todo[];
   private httpClint: HttpClient;
+  public text = '#41';
 
   constructor(httpClient: HttpClient) {
     this.httpClint = httpClient;
