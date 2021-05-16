@@ -4,7 +4,8 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Todo} from './todo';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+declare var $ : any;
 
 
 @Component({
@@ -19,7 +20,9 @@ export class AppComponent implements OnInit {
   public toggle = [];
   public todoList: Todo[];
   private httpClint: HttpClient;
-  public text = '#41';
+  public closeResult = '';
+  public todoId = null;
+
 
   constructor(httpClient: HttpClient, private modalService: NgbModal) {
     this.httpClint = httpClient;
@@ -45,13 +48,13 @@ export class AppComponent implements OnInit {
     }
   }
 
-  onCreateChildren(createChildren: Todo): void {
+  onCreateChildren(): void {
     if (this.childTitle) {
       this.httpClint
-        .post<Todo[]>('http://127.0.0.1:8000/api/create/children/todo', {title: this.childTitle, parent_id: createChildren.id})
+        .post<Todo[]>('http://127.0.0.1:8000/api/create/children/todo', {title: this.childTitle, parent_id: this.todoId})
         .subscribe(todo => {
             // @ts-ignore
-            this.todoList.find(todo => todo.id === createChildren.id).children.push(todo);
+            this.todoList.find(todo => todo.id === todo.id).children.push(todo);
           }
         );
       this.childTitle = '';
@@ -97,12 +100,22 @@ export class AppComponent implements OnInit {
       });
   }
 
-  onShow(showTodo: Todo) {
-    this.httpClint.get<Todo[]>('http://127.0.0.1:8000/api/show/todo/' + showTodo.id)
-      .subscribe(todoList => {
-        // @ts-ignore
 
-      });
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }

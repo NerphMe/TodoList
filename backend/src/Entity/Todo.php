@@ -124,5 +124,4 @@ class Todo
         $this->children[] = $child;
         $child->setParent($this);
     }
-
 }

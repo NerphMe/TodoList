@@ -13,6 +13,9 @@ import {MatPseudoCheckboxModule} from '@angular/material/core';
 import {MatListModule} from '@angular/material/list';
 import {MatIcon, MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {Ng2SearchPipeModule} from 'ng2-search-filter';
+declare var $ : any;
+
 
 @NgModule({
   declarations: [
@@ -30,7 +33,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule,
     MatListModule,
     MatIconModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
