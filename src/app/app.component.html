@@ -52,7 +52,7 @@
         <label for="todo_id" class="label">Parent Todo</label> &nbsp;
         <select name="todo_id" [(ngModel)]="todoId" class="custom-select">
           <option selected></option>
-          <option *ngFor="let todo of allTodos" value="{{todo.id}}">{{todo.title}}</option>
+          <option *ngFor="let todo of todoList" value="{{todo.id}}">{{todo.title}}</option>
         </select>
         <div class="form-group">
           <label for="childTitle" class="label">Title</label>
