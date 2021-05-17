@@ -15,26 +15,29 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TodoRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $manager;
+  private EntityManagerInterface $manager;
 
-    public function __construct(
-        ManagerRegistry $registry,
-        EntityManagerInterface $manager
-    ) {
-        $this->manager = $manager;
-        parent::__construct($registry, Todo::class);
-    }
+  public function __construct(
+    ManagerRegistry $registry,
+    EntityManagerInterface $manager
+  )
+  {
+    $this->manager = $manager;
+    parent::__construct($registry, Todo::class);
+  }
 
-    /**
-     * @return int|mixed|string
-     */
-    public function getTodos()
-    {
-        $query = $this->manager->createQuery('SELECT t FROM App\Entity\Todo t
+  /**
+   * @return int|mixed|string
+   */
+  public function getTodos()
+  {
+    $query = $this->manager->createQuery('SELECT t FROM App\Entity\Todo t
             WHERE t.parent IS NULL');
 
-        return $query->getResult();
-    }
+    return $query->getResult();
+  }
+
+
 
     /**
      * @param Todo $todo

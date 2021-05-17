@@ -5,7 +5,6 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Todo} from './todo';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-declare var $ : any;
 
 
 @Component({
@@ -17,7 +16,6 @@ export class AppComponent implements OnInit {
   public title = '';
   public title_search = '';
   public childTitle = '';
-  public toggle = [];
   public todoList: Todo[];
   private httpClint: HttpClient;
   public closeResult = '';
@@ -31,9 +29,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.httpClint.get<Todo[]>('http://127.0.0.1:8000/api/todos')
       .subscribe(todoList => {
-         return this.todoList = todoList;
+        this.todoList = todoList;
       });
   }
+
 
   onCreate(): void {
     if (this.title) {
@@ -74,15 +73,6 @@ export class AppComponent implements OnInit {
           this.todoList = this.todoList.filter(todo => todo.id !== todoOnDelete.id);
         }
       );
-  }
-
-  onComplete(todoOnComplete: Todo): void {
-    this.httpClint
-      .patch<Todo>('http://127.0.0.1:8000/api/update/todo/' + todoOnComplete.id, {
-        isCompleted: !todoOnComplete.isCompleted
-      }).subscribe((updatedTodo: Todo) => {
-      this.todoList = this.todoList.map(todo => todo.id !== updatedTodo.id ? todo : updatedTodo);
-    });
   }
 
   // tslint:disable-next-line:typedef

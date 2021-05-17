@@ -13,20 +13,16 @@ todo_update:
   controller: App\Controller\TodoController:update
   methods: [PATCH]
 
-search_todo:
+todo_search:
   path: api/search/todos
   controller: App\Controller\TodoController:search
   methods: [GET]
 
-delete_todo:
+todo_delete:
   path: api/delete/todo/{todo}
   controller: App\Controller\TodoController:delete
   methods: [DELETE]
 
-show_todo:
-  path: api/show/todo/{todo}
-  controller: App\Controller\TodoController:show
-  methods: [GET]
 
 todo_children_create:
   path: api/create/children/todo
